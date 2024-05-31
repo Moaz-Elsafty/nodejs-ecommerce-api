@@ -96,6 +96,7 @@ exports.createProductValidator = [
       })
     )
     .custom((subCategoriesIdsBody, { req }) =>
+      // get all the subCategories that belong to that category from the db
       SubCategory.find({ category: req.body.category }).then(
         (subCategories) => {
           const subCategoriesIdsDB = [];

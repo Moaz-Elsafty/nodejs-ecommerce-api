@@ -37,7 +37,7 @@ exports.getOne = (Model) =>
     const document = await Model.findById(id);
     if (!document) {
       // res.status(404).json({ message: `No Brand for this id ${id}` });
-      return next(new ApiError(`No Brand for this id ${id}`, 404));
+      return next(new ApiError(`No data for this id ${id}`, 404));
     }
     res.status(200).json({ data: document });
   });
@@ -61,7 +61,7 @@ exports.updateOne = (Model) =>
 
     if (!document) {
       // res.status(404).json({ message: `No brand for this id ${id}` });
-      return next(new ApiError(`No brand for this id ${req.params.id}`, 404));
+      return next(new ApiError(`No data for this id ${req.params.id}`, 404));
     }
     res.status(200).json({ data: document });
   });
@@ -74,7 +74,9 @@ exports.deleteOne = (Model) =>
 
     if (!document) {
       // res.status(404).json({ message: `No product for this id ${id}` });
-      return next(new ApiError(`No product for this id ${id}`, 404));
+      return next(new ApiError(`No data for this id ${id}`, 404));
     }
     res.status(204).send();
   });
+
+// find a solution for the ApiError msg to be compateble withe the Model name
