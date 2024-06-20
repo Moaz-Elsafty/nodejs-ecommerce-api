@@ -36,7 +36,7 @@ exports.uploadProductImages = upload.fields([
 ]);
 
 exports.resizeProductImages = asyncHandler(async (req, res, next) => {
-  // console.log(req.files);
+  console.log(req.files.imageCover);
   if (req.files.imageCover) {
     // 1- Image processing for imageCover
     const imageCoverFileName = `product-${uuidv4()}-${Date.now()}-cover.jpeg`;
@@ -84,19 +84,19 @@ exports.getProduct = factory.getOne(Product);
 
 //  @desc     Create product
 //  @route    POST  /api/v1/products
-//  @access   Private
+//  @access   Private/Admin-Manager
 
 //wraping it with the asyncHandler to handle the error without using try catch
 exports.createProduct = factory.createOne(Product);
 
 //  @desc      Update specific product
 //  @route     PUT /api/v1/categories/:id
-//  @access     Private
+//  @access    Private/Admin-Manager
 
 exports.updateProduct = factory.updateOne(Product);
 
 //  @desc       Delete specific product
 //  @route      DELETE /api/v1/categories/:id
-// @access      Private
+//  @access     Private/Admin
 
 exports.deleteProduct = factory.deleteOne(Product);

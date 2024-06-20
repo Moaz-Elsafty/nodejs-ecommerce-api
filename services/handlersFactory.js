@@ -1,6 +1,7 @@
 const asyncHandler = require("express-async-handler");
 const ApiError = require("../utlis/apiError");
 const ApiFeatures = require("../utlis/apiFeatures");
+const bcrypt = require("bcryptjs");
 
 //  @desc     Get list of documents
 //  @access   Public
@@ -47,6 +48,8 @@ exports.getOne = (Model) =>
 
 exports.createOne = (Model) =>
   asyncHandler(async (req, res) => {
+    // you can hash the pass before being stored in the database by the next line or use mongoose middleware(pre"save") in the schema file
+    // req.body.password = await bcrypt.hash(req.body.password, 12);
     const newDocument = await Model.create(req.body);
     res.status(201).json({ data: newDocument });
   });

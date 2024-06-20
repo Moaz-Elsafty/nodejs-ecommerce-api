@@ -50,19 +50,19 @@ exports.getBrand = factory.getOne(Brand);
 
 //  @desc     Create brand
 //  @route    POST  /api/v1/brands
-//  @access   Private
+//  @access   Private/Admin-Manager
 
 //wraping it with the asyncHandler to handle the error without using try catch
 exports.createBrand = factory.createOne(Brand);
 
 //  @desc      Update specific brand
 //  @route     PUT /api/v1/brands/:id
-//  @access     Private
+//  @access    Private/Admin-Manager
 
 exports.updateBrand = factory.updateOne(Brand);
 
 //  @desc       Delete specific brand
 //  @route      DELETE /api/v1/brands/:id
-// @access      Private
+// @access      Private/Admin
 
 exports.deleteBrand = factory.deleteOne(Brand);
