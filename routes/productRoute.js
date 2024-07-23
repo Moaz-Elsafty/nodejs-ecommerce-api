@@ -18,7 +18,11 @@ const {
   resizeProductImages,
 } = require("../services/productService");
 
+const reviewsRoute = require("./reviewRoute");
+
 const router = express.Router();
+
+router.use("/:productId/reviews", reviewsRoute);
 
 //method 2
 router

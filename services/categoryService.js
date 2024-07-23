@@ -2,8 +2,10 @@
 
 //multer is a npm package used to upload files
 const multer = require("multer");
+
 //sharp is a npm package used to manipulate the images
 const sharp = require("sharp");
+
 //uuid package is used to generate a unique id
 const { v4: uuidv4 } = require("uuid");
 const asyncHandler = require("express-async-handler");

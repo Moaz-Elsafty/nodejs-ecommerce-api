@@ -32,10 +32,17 @@ exports.getAll = (Model, modelName) =>
 //  @desc     Get specific document by id
 //  @access   Public
 
-exports.getOne = (Model) =>
+exports.getOne = (Model, populationOpt) =>
   asyncHandler(async (req, res, next) => {
     const { id } = req.params;
-    const document = await Model.findById(id);
+    // 1) building query
+    let query = Model.findById(id);
+    if (populationOpt) {
+      query = query.populate(populationOpt);
+    }
+
+    // 2) execute query
+    const document = await query;
     if (!document) {
       // res.status(404).json({ message: `No Brand for this id ${id}` });
       return next(new ApiError(`No data for this id ${id}`, 404));
@@ -54,7 +61,7 @@ exports.createOne = (Model) =>
     res.status(201).json({ data: newDocument });
   });
 
-//  @desc      Update specific
+//  @desc       Update specific
 //  @access     Private
 exports.updateOne = (Model) =>
   asyncHandler(async (req, res, next) => {
@@ -66,6 +73,9 @@ exports.updateOne = (Model) =>
       // res.status(404).json({ message: `No brand for this id ${id}` });
       return next(new ApiError(`No data for this id ${req.params.id}`, 404));
     }
+
+    // Triggers "save" event when update document >> specially in updating reviews
+    document.save();
     res.status(200).json({ data: document });
   });
 
@@ -73,12 +83,16 @@ exports.deleteOne = (Model) =>
   asyncHandler(async (req, res, next) => {
     const { id } = req.params;
 
-    const document = await Model.findByIdAndDelete(id);
+    const document = await Model.findById(id);
 
     if (!document) {
       // res.status(404).json({ message: `No product for this id ${id}` });
       return next(new ApiError(`No data for this id ${id}`, 404));
     }
+
+    // Triggers "remove" event when delete document >> specially in deleting reviews
+    await document.remove();
+
     res.status(204).send();
   });
 

@@ -1,0 +1,6 @@
+1) add a feature that if the user active property is false then block his access 
+to all the routes and when he want to activate it again he has to login with his email and pass again. >> (authService.protect, userRoute)
+
+2) Bug to trigger the "remove" event when deleting a review to update the product total reviews 
+
+3) Edit spicific address in the user collection

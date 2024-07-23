@@ -36,7 +36,7 @@ exports.uploadProductImages = upload.fields([
 ]);
 
 exports.resizeProductImages = asyncHandler(async (req, res, next) => {
-  console.log(req.files.imageCover);
+  // console.log(req.files.imageCover);
   if (req.files.imageCover) {
     // 1- Image processing for imageCover
     const imageCoverFileName = `product-${uuidv4()}-${Date.now()}-cover.jpeg`;
@@ -80,7 +80,7 @@ exports.getProducts = factory.getAll(Product, "Products");
 //  @desc     Get specific product by id
 //  @route    Get /api/v1/products/:id
 //  @access   Public
-exports.getProduct = factory.getOne(Product);
+exports.getProduct = factory.getOne(Product, "reviews");
 
 //  @desc     Create product
 //  @route    POST  /api/v1/products

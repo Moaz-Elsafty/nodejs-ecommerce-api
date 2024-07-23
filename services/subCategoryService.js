@@ -11,7 +11,6 @@ exports.setCategoryIdToBody = (req, res, next) => {
 //  @desc     Create subCategory
 //  @route    POST  /api/v1/subCateogries
 //  @access   Private
-
 exports.createSubCategory = factory.createOne(SubCategory);
 
 // Middleware for filtering the get request before the main get request
