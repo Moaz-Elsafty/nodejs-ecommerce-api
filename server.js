@@ -10,15 +10,7 @@ const globalError = require("./middlewares/errorMiddleware");
 const dbConnection = require("./config/database");
 
 // Routes
-const categoryRoute = require("./routes/categoryRoute");
-const subCategoryRoute = require("./routes/subCategoryRoute");
-const brandRoute = require("./routes/brandRoute");
-const productRoute = require("./routes/productRoute");
-const userRoute = require("./routes/userRoute");
-const authRoute = require("./routes/authRoute");
-const reviewRoute = require("./routes/reviewRoute");
-const wishlistRoute = require("./routes/wishlistRoute");
-const addressRoute = require("./routes/addressRoute");
+const mountRoutes = require("./routes");
 
 //connect with db
 dbConnection();
@@ -36,15 +28,7 @@ if (process.env.NODE_ENV === "development") {
 }
 
 //Mount Routes
-app.use("/api/v1/categories", categoryRoute);
-app.use("/api/v1/subcategories", subCategoryRoute);
-app.use("/api/v1/brands", brandRoute);
-app.use("/api/v1/products", productRoute);
-app.use("/api/v1/users", userRoute);
-app.use("/api/v1/auth", authRoute);
-app.use("/api/v1/reviews", reviewRoute);
-app.use("/api/v1/wishlist", wishlistRoute);
-app.use("/api/v1/addresses", addressRoute);
+mountRoutes(app);
 
 //creating error and send it to error handling middleware
 app.all("*", (req, res, next) => {

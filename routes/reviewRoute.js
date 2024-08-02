@@ -30,6 +30,7 @@ router
     createReviewValidator,
     createReview
   );
+
 router
   .route("/:id")
   .get(getReviewValidator, getReview)
