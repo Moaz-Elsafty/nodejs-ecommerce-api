@@ -3,6 +3,8 @@ const path = require("path");
 const express = require("express");
 const dotenv = require("dotenv");
 const morgan = require("morgan");
+const cors = require("cors");
+const compression = require("compression");
 
 dotenv.config({ path: "./config.env" });
 const ApiError = require("./utlis/apiError");
@@ -17,6 +19,13 @@ dbConnection();
 
 //seting up express app
 const app = express();
+
+// Enable other domains to access my application
+app.use(cors());
+app.options("*", cors());
+
+// compress all responses
+app.use(compression());
 
 //parsing the request body to json
 app.use(express.json());

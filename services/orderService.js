@@ -1,3 +1,4 @@
+const stripe = require("stripe")(process.env.STRIPE_SECRET);
 const asyncHandler = require("express-async-handler");
 const factory = require("./handlersFactory");
 const ApiError = require("../utlis/apiError");
@@ -52,8 +53,7 @@ exports.createCashOrder = asyncHandler(async (req, res, next) => {
 });
 
 exports.filterOrderForLoggedUser = asyncHandler(async (req, res, next) => {
-  if (req.user.role === "user")
-    req.filterObj = { user: req.user._id, id: req.params.id };
+  if (req.user.role === "user") req.filterObj = { user: req.user._id };
   next();
 });
 // @desc    Get all orders
@@ -76,7 +76,7 @@ exports.updateOrderToPaid = asyncHandler(async (req, res, next) => {
       new ApiError(`There is no such order with this id:${req.params.id}`, 404)
     );
   }
-  console.log(order);
+  // console.log(order);
   // update order to paid
   order.isPaid = true;
   order.paidAt = Date.now();
@@ -103,4 +103,53 @@ exports.updateOrderToDeliverd = asyncHandler(async (req, res, next) => {
   const updatedOrder = await order.save();
 
   res.status(200).json({ status: "success", data: updatedOrder });
+});
+
+// @desc    Get checkout session from stripe and send it as response
+// @route   GET /api/v1/orders/checkout-session/:cartId
+// @access  Protected/User
+exports.checkoutSession = asyncHandler(async (req, res, next) => {
+  // app settings
+  const taxPrice = 0;
+  const shippingPrice = 0;
+  // 1) Get cart depend on cartId
+  const cart = await Cart.findById(req.params.cartId);
+  if (!cart) {
+    return next(
+      new ApiError(`There is no such cart with id ${req.params.cartId}`, 404)
+    );
+  }
+
+  // 2) Get order price depend on cart price "Check if coupon applied"
+  // teranry operator method
+  const cartPrice = cart.totalPriceAfterDiscount
+    ? cart.totalPriceAfterDiscount
+    : cart.totalCartPrice;
+
+  const totalOrderPrice = cartPrice + taxPrice + shippingPrice;
+
+  // 3) Create stripe checkout session
+  const session = await stripe.checkout.sessions.create({
+    line_items: [
+      {
+        price_data: {
+          currency: "EGP",
+          product_data: {
+            name: req.user.name,
+          },
+          unit_amount: totalOrderPrice * 100,
+        },
+        quantity: 1,
+      },
+    ],
+    mode: "payment",
+    success_url: `${req.protocol}://${req.get("host")}/orders`,
+    cancel_url: `${req.protocol}://${req.get("host")}/cart`,
+    customer_email: req.user.email,
+    client_reference_id: req.params.cartId,
+    metadata: req.body.shippingAddress,
+  });
+
+  // 4) Send session to response
+  res.status(200).json({ status: "success", session });
 });
