@@ -9,6 +9,7 @@ const rateLimit = require("express-rate-limit");
 const hpp = require("hpp");
 const mongoSanitize = require("express-mongo-sanitize");
 const xss = require("xss-clean");
+const cron = require("node-cron");
 
 dotenv.config({ path: "./config.env" });
 const ApiError = require("./utlis/apiError");
@@ -30,6 +31,11 @@ app.options("*", cors());
 
 // compress all responses
 app.use(compression());
+
+// Makeing sure that the application is working using cron job every 10 minutes
+cron.schedule("*/10 * * * *", () => {
+  console.log("App is running successfully");
+});
 
 //parsing the request body to json
 app.use(express.json({ limit: "20kb" }));
