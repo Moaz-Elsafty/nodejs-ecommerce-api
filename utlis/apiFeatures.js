@@ -6,7 +6,7 @@ class ApiFeatures {
 
   fitler() {
     const queryStringObj = { ...this.queryString }; //take a copy of the query obj
-    const excludesFields = ["page", "sort", "limit", "fields"];
+    const excludesFields = ["page", "sort", "limit", "fields", "keyword"];
     excludesFields.forEach((field) => delete queryStringObj[field]);
     // Applying filteration using [gte, gt, lt, lte]
     let queryStr = JSON.stringify(queryStringObj);

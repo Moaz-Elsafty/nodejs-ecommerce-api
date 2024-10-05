@@ -4,3 +4,8 @@ to all the routes and when he want to activate it again he has to login with his
 2) Bug to trigger the "remove" event when deleting a review to update the product total reviews 
 
 3) Edit spicific address in the user collection
+
+Features:
+1- empty the cart after 24 hrs --> cronjob
+2- send email to the user that has added things to the cart after 1 hr --> sending emails and consuming the template
+3- send email to remind the user that he has added things to the cart after 4 hr to proceed --> sending emails and consuming the template
