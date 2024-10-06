@@ -48,6 +48,10 @@ router
   .put(uploadUserImage, resizeImage, updateUserValidator, updateUser)
   .delete(deleteUserValidator, deleteUser);
 
-router.put(updateUserPasswordValidator, changeUserPassword);
+router.put(
+  "/changePassword/:id",
+  updateUserPasswordValidator,
+  changeUserPassword
+);
 
 module.exports = router;

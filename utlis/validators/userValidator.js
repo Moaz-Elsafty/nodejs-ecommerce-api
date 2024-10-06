@@ -1,8 +1,8 @@
 const { check, body } = require("express-validator");
 const { default: slugify } = require("slugify");
+const bcrypt = require("bcryptjs");
 const validatorMiddleware = require("../../middlewares/validatorMiddleware");
 const User = require("../../models/userModel");
-const bcrypt = require("bcryptjs");
 
 exports.createUserValidator = [
   check("name")
